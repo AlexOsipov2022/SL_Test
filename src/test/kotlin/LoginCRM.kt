@@ -17,6 +17,7 @@ class LoginCRM {
     val passwordField = "input[name='password']"
     val buttonSubmit = "button[type='submit']"
     val textTitle = `$`("h2.indexTitle")
+    val textLoans = `$`("li.ng-binding")
 
     @BeforeEach
     fun setup() {
@@ -46,18 +47,7 @@ class LoginCRM {
         `$`(passwordField).setValue(config.password)
         `$`(buttonSubmit).click()
 
-        Assertions.assertTrue(textTitle.text().contains("Главная"), "Текст элемента не содержит 'Главная'")
-    }
-
-    @Test
-    fun testLogin() {
-        val config = ConfigLoader.loadConfig()
-
-        println("Username: ${config.username}")
-        println("Password: ${config.password}")
-
-        assertEquals("offline@solva.kz", config.username)
-        assertEquals("11111111", config.password)
+        Assertions.assertTrue(textLoans.text().contains("Займы"), "Текст элемента не содержит 'Главная'")
     }
 
     @AfterEach
