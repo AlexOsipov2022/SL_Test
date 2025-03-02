@@ -2,7 +2,9 @@ import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.Selenide.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import utils.ConfigLoader
 import kotlin.test.Test
 
 
@@ -11,6 +13,11 @@ class LoginCRM {
     val BASE_URL: String = "https://kz-solva-release-300.kz.idfaws.com/secure/new-admin/index.html#/login"
 //    private val BASE_URL: String = "https://kz-solva-release-slkz-91712.kz.idfaws.com/secure/new-admin/index.html#/login"
 
+    val usernameField = "input[name='username']"
+    val passwordField = "input[name='password']"
+    val buttonSubmit = "button[type='submit']"
+    val textTitle = `$`("h2.indexTitle")
+
     @BeforeEach
     fun setup() {
         Configuration.browser = "chrome"
@@ -18,10 +25,6 @@ class LoginCRM {
 
     @Test
     fun testLoginCRM() {
-        val usernameField = "input[name='username']"
-        val passwordField = "input[name='password']"
-        val buttonSubmit = "button[type='submit']"
-        val textTitle = `$`("h2.indexTitle")
 
         open(BASE_URL)
 
@@ -30,6 +33,31 @@ class LoginCRM {
         `$`(buttonSubmit).click()
 
         Assertions.assertTrue(textTitle.text().contains("Главная"), "Текст элемента не содержит 'Главная'")
+    }
+
+    @Test
+    fun testOfflineAgentLoginCRM() {
+
+        val config = ConfigLoader.loadConfig()
+
+        open(BASE_URL)
+
+        `$`(usernameField).setValue(config.username)
+        `$`(passwordField).setValue(config.password)
+        `$`(buttonSubmit).click()
+
+        Assertions.assertTrue(textTitle.text().contains("Главная"), "Текст элемента не содержит 'Главная'")
+    }
+
+    @Test
+    fun testLogin() {
+        val config = ConfigLoader.loadConfig()
+
+        println("Username: ${config.username}")
+        println("Password: ${config.password}")
+
+        assertEquals("offline@solva.kz", config.username)
+        assertEquals("11111111", config.password)
     }
 
     @AfterEach
