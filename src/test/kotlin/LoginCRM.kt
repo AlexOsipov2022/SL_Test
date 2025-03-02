@@ -47,7 +47,7 @@ class LoginCRM {
         `$`(passwordField).setValue(config.password)
         `$`(buttonSubmit).click()
 
-        Assertions.assertTrue(textLoans.text().contains("Займы"), "Текст элемента не содержит 'Главная'")
+        Assertions.assertTrue(textLoans.text().contains("Займы"), "Текст элемента не содержит 'Займы'")
     }
 
     @AfterEach
